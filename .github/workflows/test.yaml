@@ -13,6 +13,7 @@ jobs:
 
       - name: Setup
         uses: ./setup
+        timeout-minutes: 1
         with:
           tailscaleAuthKey: ${{ secrets.TAILSCALE_AUTHKEY }}
           nixBuildSshKey: ${{ secrets.NIX_BUILD_SSH_KEY }}
