@@ -1,0 +1,19 @@
+name: Cache Nix output
+description: Cache Nix output
+inputs:
+  nixOutput:
+    description: "Nix output expression"
+    required: true
+  nixCachePrivateKey:
+    description: "Nix cache private key"
+    required: false
+runs:
+  using: composite
+  steps:
+    - name: Update Nix cache
+      shell: bash
+      env:
+        NIX_CACHE_KEY: ${{ inputs.nixCachePrivateKey }}
+      run: |
+        nix store sign '${{ inputs.nixOutput }}' -v -r -k <(printenv NIX_CACHE_KEY)
+        nix copy -v '${{ inputs.nixOutput }}' --to s3://nixed/cache?profile=nix-cache

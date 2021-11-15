@@ -1,0 +1,19 @@
+name: Build Nix output
+description: Build Nix output
+inputs:
+  nixOutput:
+    description: "Nix output expression"
+    required: true
+runs:
+  using: composite
+  steps:
+    - name: Info
+      shell: bash
+      run: |
+        nix show-derivation '${{ inputs.nixOutput }}'
+        nix path-info '${{ inputs.nixOutput }}' || true
+
+    - name: Build
+      shell: bash
+      run: |
+        nix build -L -vv '${{ inputs.nixOutput }}'
