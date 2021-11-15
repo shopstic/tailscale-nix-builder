@@ -27,9 +27,7 @@ jobs:
 
       - run: cat ./result
 
-      - run: |
-          tailscale status
-          sudo tailscale logout
+      - run: sudo tailscale logout
 
       - name: Cache
         uses: ./cache

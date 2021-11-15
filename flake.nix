@@ -10,7 +10,7 @@
           pkgs = nixpkgs.legacyPackages.${system};
         in
         {
-          defaultPackage = pkgs.runCommand "bar" { } ''
+          defaultPackage = pkgs.runCommand "test" { } ''
             echo "Result is" > $out
             uname -a >> $out
           '';
