@@ -3,7 +3,8 @@ description: Cache Nix output
 inputs:
   nixOutput:
     description: "Nix output expression"
-    required: true
+    required: false
+    default: ""
   nixCachePrivateKey:
     description: "Nix cache private key"
     required: false

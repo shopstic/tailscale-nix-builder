@@ -3,7 +3,8 @@ description: Build Nix output
 inputs:
   nixOutput:
     description: "Nix output expression"
-    required: true
+    required: false
+    default: ""
 runs:
   using: composite
   steps:
