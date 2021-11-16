@@ -28,7 +28,7 @@ runs:
           substituters = s3://nixed/cache?profile=nix-cache https://cache.nixos.org/
           trusted-public-keys = nix-cache:jxOpK2dQOv/7JIb5/30+W4oidtUgmFMXLc/3mC09mKM= cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY=
           experimental-features = nix-command flakes
-          builders = root@aarch64-darwin.shopstic.org.github.beta.tailscale.net aarch64-darwin; nix@aarch64-linux.shopstic.org.github.beta.tailscale.net aarch64-linux;
+          builders = root@nix-aarch64-darwin.shopstic.org.github.beta.tailscale.net	aarch64-darwin; root@nix-x86-64-darwin.shopstic.org.github.beta.tailscale.net	x86_64-darwin; nix@nix-aarch64-linux.shopstic.org.github.beta.tailscale.net aarch64-linux; nix@nix-x86-64-linux.shopstic.org.github.beta.tailscale.net x86_64-linux;
           builders-use-substitutes = true
 
     - name: Download Tailscale
