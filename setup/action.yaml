@@ -29,6 +29,7 @@ runs:
     - name: Derive substituters
       shell: bash
       id: derive_substituters
+      if: inputs.tailscaleAuthKey != ''
       env:
         NIX_BUILDERS: ${{ inputs.nixBuilders }}
       run: |-
