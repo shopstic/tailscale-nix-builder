@@ -41,7 +41,7 @@ runs:
       shell: bash
       env:
         VERSION: ${{ inputs.tailscaleVersion }}
-      if: inputs.tailscaleAuthKey != ""
+      if: inputs.tailscaleAuthKey != ''
       run: |
         MINOR=$(echo "$VERSION" | awk -F '.' {'print $2'})
         if [ $((MINOR % 2)) -eq 0 ]; then
@@ -60,7 +60,7 @@ runs:
       env:
         TAILSCALE_AUTHKEY: ${{ inputs.tailscaleAuthKey }}
         REPO_NAME: ${{ github.repository }}
-      if: inputs.tailscaleAuthKey != ""
+      if: inputs.tailscaleAuthKey != ''
       run: |
         sudo tailscaled 2>~/tailscaled.log &
         CLEANED_REPO_NAME=${REPO_NAME//\//-}
