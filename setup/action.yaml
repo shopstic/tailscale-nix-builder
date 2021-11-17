@@ -33,7 +33,7 @@ runs:
       env:
         NIX_BUILDERS: ${{ inputs.nixBuilders }}
       run: |-
-        SUBSTITUTERS=$(node -e "console.log(process.env.NIX_BUILDERS.split(';').map(b => b.trim()).filter(b => b.length > 0).map(b => `${b.split(' ')[0]}?priority=50`).join(' '))")
+        SUBSTITUTERS=$(node -e "console.log(process.env.NIX_BUILDERS.split(';').map(b => b.trim()).filter(b => b.length > 0).map(b => b.split(' ')[0]} + '?priority=50').join(' '))")
         echo "::set-output name=substituters::${SUBSTITUTERS}"
 
     - name: Install Nix
