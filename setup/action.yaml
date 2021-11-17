@@ -33,7 +33,7 @@ runs:
       env:
         NIX_BUILDERS: ${{ inputs.nixBuilders }}
       run: |-
-        SUBSTITUTERS=$(node -e "console.log(process.env.NIX_BUILDERS.split(';').map(b => b.trim()).filter(b => b.length > 0).map(b => b.split(' ')[0]).join(' '))")
+        SUBSTITUTERS=$(node -e "console.log(process.env.NIX_BUILDERS.split(';').map(b => b.trim()).filter(b => b.length > 0).map(b => `${b.split(' ')[0]}?priority=50`).join(' '))")
         echo "::set-output name=substituters::${SUBSTITUTERS}"
 
     - name: Install Nix
@@ -41,7 +41,7 @@ runs:
       with:
         nix_version: 2.4
         nix_conf: |
-          substituters = s3://nixed/cache?profile=nix-cache https://cache.nixos.org/ ${{ steps.derive_substituters.outputs.substituters }}
+          substituters = s3://nixed/cache?profile=nix-cache&priority=75 https://cache.nixos.org?priority=100 ${{ steps.derive_substituters.outputs.substituters }}
           trusted-public-keys = nix-cache:jxOpK2dQOv/7JIb5/30+W4oidtUgmFMXLc/3mC09mKM= cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY=
           experimental-features = nix-command flakes
           builders = ${{ inputs.tailscaleAuthKey && inputs.nixBuilders }}
