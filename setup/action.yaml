@@ -41,7 +41,7 @@ runs:
       with:
         nix_version: 2.4
         nix_conf: |
-          substituters = s3://nixed/cache?profile=nix-cache&priority=50 https://cache.nixos.org?priority=10 ${{ steps.derive_substituters.outputs.substituters }}
+          substituters = https://nix.shopstic.com?priority=50 https://cache.nixos.org?priority=10 ${{ steps.derive_substituters.outputs.substituters }}
           trusted-public-keys = nix-cache:jxOpK2dQOv/7JIb5/30+W4oidtUgmFMXLc/3mC09mKM= cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY=
           experimental-features = nix-command flakes
           builders = ${{ inputs.tailscaleAuthKey && inputs.nixBuilders }}
