@@ -93,6 +93,7 @@ runs:
           IdentitiesOnly yes
           IdentityFile ~/.ssh/nix-build
           StrictHostKeyChecking no
+          LogLevel ERROR
         EOF
 
           printenv NIX_BUILD_SSH_KEY > ~/.ssh/nix-build
