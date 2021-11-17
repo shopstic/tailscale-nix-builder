@@ -22,16 +22,25 @@ inputs:
   nixBuilders:
     description: "Nix builders"
     required: false
-    default: "root@nix-aarch64-darwin.shopstic.org.github.beta.tailscale.net aarch64-darwin; root@nix-x86-64-darwin.shopstic.org.github.beta.tailscale.net x86_64-darwin; nix@nix-aarch64-linux.shopstic.org.github.beta.tailscale.net aarch64-linux; nix@nix-x86-64-linux.shopstic.org.github.beta.tailscale.net x86_64-linux;"
+    default: "ssh-ng://root@nix-aarch64-darwin.shopstic.org.github.beta.tailscale.net aarch64-darwin; ssh-ng://root@nix-x86-64-darwin.shopstic.org.github.beta.tailscale.net x86_64-darwin; ssh-ng://nix@nix-aarch64-linux.shopstic.org.github.beta.tailscale.net aarch64-linux; ssh-ng://nix@nix-x86-64-linux.shopstic.org.github.beta.tailscale.net x86_64-linux;"
 runs:
   using: composite
   steps:
+    - name: Derive substituters
+      shell: bash
+      id: derive_substituters
+      env:
+        NIX_BUILDERS: ${{ inputs.nixBuilders }}
+      run: |-
+        SUBSTITUTERS=$(node -e "console.log(process.env.NIX_BUILDERS.split(';').map(b => b.trim()).filter(b => b.length > 0).map(b => b.split(' ')[0]).join(' '))")
+        echo "::set-output name=substituters::${SUBSTITUTERS}"
+
     - name: Install Nix
       uses: nixbuild/nix-quick-install-action@7f7c02d0018295abf3b3623edaaccbb1f133bb51
       with:
         nix_version: 2.4
         nix_conf: |
-          substituters = s3://nixed/cache?profile=nix-cache https://cache.nixos.org/
+          substituters = s3://nixed/cache?profile=nix-cache https://cache.nixos.org/ ${{ steps.derive_substituters.outputs.substituters }}
           trusted-public-keys = nix-cache:jxOpK2dQOv/7JIb5/30+W4oidtUgmFMXLc/3mC09mKM= cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY=
           experimental-features = nix-command flakes
           builders = ${{ inputs.tailscaleAuthKey && inputs.nixBuilders }}
