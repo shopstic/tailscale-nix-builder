@@ -15,10 +15,12 @@ inputs:
     default: ""
   nixCacheS3AccessKeyId:
     description: "Nix cache S3 access key ID"
-    required: true
+    required: false
+    default: ""
   nixCacheS3SecretAccessKey:
     description: "Nix cache S3 secret access key"
-    required: true
+    required: false
+    default: ""
   nixBuilders:
     description: "Nix builders"
     required: false
@@ -101,9 +103,11 @@ runs:
           chmod 0600 ~/.ssh/nix-build
         fi
 
-        mkdir -p ~/.aws
+        if [[ "${NIX_CACHE_S3_ACCESS_KEY_ID}" != "" && "${NIX_CACHE_S3_SECRET_ACCESS_KEY}" != "" ]]; then
+          mkdir -p ~/.aws
         cat <<EOF > ~/.aws/credentials
         [nix-cache]
         aws_access_key_id = ${NIX_CACHE_S3_ACCESS_KEY_ID}
         aws_secret_access_key = ${NIX_CACHE_S3_SECRET_ACCESS_KEY}
         EOF
+        fi
